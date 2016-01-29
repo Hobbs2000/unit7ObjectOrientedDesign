@@ -23,6 +23,14 @@ public class Question
    {
       text = questionText;
    }
+   
+   /**
+    * Adds text to the question text
+    */
+   public void addText( String additionalText )
+   {
+       text += additionalText;
+   }
 
    /**
       Sets the answer for this question.
