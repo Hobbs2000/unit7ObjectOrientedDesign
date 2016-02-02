@@ -23,4 +23,19 @@ public class DriverLicense extends Card
         formatted += "\nExpiration Year: "+this.expireYear;
         return formatted;
     }
+    
+    /**
+     * 
+     */
+    public boolean isExpired(int currentYear)
+    {
+        if (this.expireYear < currentYear)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

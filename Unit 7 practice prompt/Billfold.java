@@ -17,8 +17,33 @@ public class Billfold
     /**
      * 
      */
+    public Billfold()
+    {
+    }
+    
+    /**
+     * 
+     */
     public void addCard(Card newCard)
     {
-        
+        if (this.card1 == null)
+        {
+            this.card1 = newCard;
+        }
+        else if (this.card2 == null)
+        {
+            this.card2 = newCard;
+        }
+    }
+    
+    /**
+     * 
+     */
+    public String formatCards()
+    {
+        String cards = "";
+        cards += "["+this.card1.format()+"]\n";
+        cards += "["+this.card2.format()+"]\n";
+        return cards;
     }
 }

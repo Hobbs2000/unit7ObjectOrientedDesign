@@ -8,10 +8,18 @@ public class IDCard extends Card
     /**
      * 
      */
-    public IDCard(int id, String name)
+    public IDCard( String name, int id)
     {
         super(name);
         this.IDnumber = id;
+    }
+    
+    /**
+     * 
+     */
+    public int getIDnumber()
+    {
+        return this.IDnumber;
     }
     
     /**
@@ -24,5 +32,17 @@ public class IDCard extends Card
         return formated;
     }
     
-    
+    /**
+     * 
+     */
+    public boolean equals(IDCard other)
+    {
+        if (super.equals(other))
+        {
+            if (other.getIDnumber() == this.getIDnumber())
+            {
+                return true;
+            }
+        }
+    }
 }
