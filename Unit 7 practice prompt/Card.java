@@ -30,15 +30,16 @@ public class Card
       return "Card holder: " + name;
    }
    
-   public boolean equals(Card other)
+   public boolean equals(Object other)
    {
-       if ((this.getClass() == other.getClass()) && (this.getName().equals(other.getName())))
+       if (other instanceof Card)
        {
-           return true;
+           Card otherCard = (Card)other;
+           if (this.getName().equals(otherCard.getName()))
+           {
+               return true;
+           }
        }
-       else
-       {
-           return false;
-       }
+       return false;
    }
 }

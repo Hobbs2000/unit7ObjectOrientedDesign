@@ -35,14 +35,18 @@ public class IDCard extends Card
     /**
      * 
      */
-    public boolean equals(IDCard other)
+    public boolean equals(Object other)
     {
-        if (super.equals(other))
+        if (this.getClass() == other.getClass())
         {
-            if (other.getIDnumber() == this.getIDnumber())
+            boolean isEqual = super.equals(other);
+            
+            IDCard otherID = (IDCard) other;
+            if (this.getIDnumber() == otherID.getIDnumber())
             {
                 return true;
             }
         }
+        return false;
     }
 }
