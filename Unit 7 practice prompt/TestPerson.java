@@ -31,12 +31,10 @@ public class TestPerson
             }
         }
         
-        //Print out the names
-        System.out.println();
-        System.out.println("Sorted Names:");
-        for (int i = 0; i < 10; i++)
-        {
-            System.out.println(people[i].getName());
-        }
+        String firstName = people[0].getName();
+        String lastName = people[people.length-1].getName();
+        
+        //Print first and last name
+        System.out.println("\nFirst name: "+firstName+"\nLast Name: "+lastName);
     }
 }
