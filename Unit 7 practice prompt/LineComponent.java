@@ -1,9 +1,9 @@
 import java.awt.Graphics;
 import javax.swing.JComponent;
-public class TriangleComponent extends JComponent
+public class LineComponent extends JComponent
 {
     
-    public static draw()
+    public void draw()
     {
     }
 }

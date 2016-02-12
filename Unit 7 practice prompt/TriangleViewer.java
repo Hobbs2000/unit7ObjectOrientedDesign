@@ -13,8 +13,9 @@ public class TriangleViewer
     private static final int HEIGHT = 300;
     
     private Point p1, p2, p3; //Points of the triangle
+    private Mouse mouse;
     
-    private Graphics g = new Graphics();
+    private Graphics g;
     /**
      * 
      */
@@ -25,6 +26,9 @@ public class TriangleViewer
         frame.add(panel);
         
         clearPoints();
+        
+        mouse = new Mouse();
+        panel.addMouseListener(mouse);
         
         frame.setSize(WIDTH, HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,12 +53,18 @@ public class TriangleViewer
         TriangleViewer viewer = new TriangleViewer(); 
     }
     
+    public void draw(int x1, int y1, int x2, int y2)
+    {
+        g.drawLine((int)x1, (int)y1, (int)x2, (int)x2);
+    }
+    
     /**
      * 
      */
     public class Mouse implements MouseListener
     {
         private int numClicks = 0;
+        private JPanel container = panel;
         public void mousePressed(MouseEvent event)
         {
         }
@@ -71,13 +81,13 @@ public class TriangleViewer
             else if (numClicks == 2)
             {
                 p2.setLocation(event.getX(), event.getY());
-                g.drawLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+                draw(p1.getX(), p1.getY(), p2.getX(), p2.getY());
             }
             else if (numClicks == 3)
             {
                 p3.setLocation(event.getX(), event.getY());
-                g.drawLine(p1.getX(), p1.getY(), p3.getX(), p3.getY());
-                g.drawLine(p2.getX(), p2.getY(), p3.getX(), p3.getY());
+                draw(p1.getX(), p1.getY(), p3.getX(), p3.getY());
+                draw(p2.getX(), p2.getY(), p3.getX(), p3.getY());
             }
             else
             {
