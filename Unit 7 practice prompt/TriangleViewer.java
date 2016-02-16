@@ -11,11 +11,10 @@ public class TriangleViewer
     
     private static final int WIDTH = 500;
     private static final int HEIGHT = 300;
-    
-    private Point p1, p2, p3; //Points of the triangle
+
     private Mouse mouse;
     
-    private Graphics g;
+    private TriangleComponent component;
     /**
      * 
      */
@@ -24,8 +23,10 @@ public class TriangleViewer
         frame = new JFrame();
         panel = new JPanel();
         frame.add(panel);
-        
-        clearPoints();
+       
+        this.component = new TriangleComponent();
+        this.component.clearPoints();
+        panel.add(component);
         
         mouse = new Mouse();
         panel.addMouseListener(mouse);
@@ -38,24 +39,9 @@ public class TriangleViewer
     /**
      * 
      */
-    public void clearPoints()
-    {
-        this.p1 = new Point(0,0);
-        this.p2 = new Point(0,0);
-        this.p3 = new Point(0,0);
-    }
-    
-    /**
-     * 
-     */
     public static void main(String[] args)
     {
         TriangleViewer viewer = new TriangleViewer(); 
-    }
-    
-    public void draw(int x1, int y1, int x2, int y2)
-    {
-        g.drawLine((int)x1, (int)y1, (int)x2, (int)x2);
     }
     
     /**
@@ -74,26 +60,17 @@ public class TriangleViewer
         public void mouseClicked(MouseEvent event)
         {
             numClicks++;
-            if (numClicks == 1)
+            System.out.print(numClicks);
+            if (numClicks >= 4)
             {
-                p1.setLocation(event.getX(), event.getY());
-            }
-            else if (numClicks == 2)
-            {
-                p2.setLocation(event.getX(), event.getY());
-                draw(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-            }
-            else if (numClicks == 3)
-            {
-                p3.setLocation(event.getX(), event.getY());
-                draw(p1.getX(), p1.getY(), p3.getX(), p3.getY());
-                draw(p2.getX(), p2.getY(), p3.getX(), p3.getY());
-            }
-            else
-            {
-                clearPoints();
+                System.out.println(" Clear\n");
                 numClicks = 0;
+                component.clearPoints();
+                return;
             }
+            
+            component.update(numClicks, event.getX(), event.getY());
+            component.repaint();
         }
         public void mouseEntered(MouseEvent event)
         {
