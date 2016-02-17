@@ -22,18 +22,23 @@ public class TriangleComponent extends JComponent
     public void update(int numClicks, int x, int y)
     {
         this.numClicks = numClicks;
-        System.out.println(" update");
+        
+        //System.out.println(" Passed in X: "+x+" Y: "+y);
+        
         if (numClicks == 1)
         {
             p1.setLocation(x, y);
+            //System.out.println("p1 x: "+p1.getX()+" y: "+p1.getY());
         }
         else if (numClicks == 2)
         {
             p2.setLocation(x, y);
+            //System.out.println("p2 x: "+p2.getX()+" y: "+p2.getY());
         }
         else if (numClicks == 3)
         {
             p3.setLocation(x, y);
+            //System.out.println("p3 x: "+p3.getX()+" y: "+p3.getY());
         }
         
     }
@@ -41,9 +46,8 @@ public class TriangleComponent extends JComponent
     /**
      * 
      */
-    public void PaintComponent(Graphics g)
+    public void paintComponent(Graphics g)
     {
-        System.out.println(" draw");
         if (numClicks == 2)
         {
             g.drawLine((int)p1.getX(), (int)p1.getY(), (int)p2.getX(), (int)p2.getY());

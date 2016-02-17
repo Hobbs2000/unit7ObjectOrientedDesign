@@ -2,13 +2,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
-import java.awt.Point;
-import java.awt.Graphics;
-public class TriangleViewer
+public class TriangleViewer extends JFrame
 {
-    private JFrame frame;
-    private JPanel panel;
-    
     private static final int WIDTH = 500;
     private static final int HEIGHT = 300;
 
@@ -19,21 +14,17 @@ public class TriangleViewer
      * 
      */
     public TriangleViewer()
-    {
-        frame = new JFrame();
-        panel = new JPanel();
-        frame.add(panel);
-       
-        this.component = new TriangleComponent();
-        this.component.clearPoints();
-        panel.add(component);
+    {  
+        component = new TriangleComponent();
+        component.clearPoints();
+        this.add(component);
         
         mouse = new Mouse();
-        panel.addMouseListener(mouse);
+        this.addMouseListener(mouse);
         
-        frame.setSize(WIDTH, HEIGHT);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+        this.setSize(WIDTH, HEIGHT);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setVisible(true);
     }
     
     /**
@@ -50,7 +41,6 @@ public class TriangleViewer
     public class Mouse implements MouseListener
     {
         private int numClicks = 0;
-        private JPanel container = panel;
         public void mousePressed(MouseEvent event)
         {
         }
@@ -66,10 +56,12 @@ public class TriangleViewer
                 System.out.println(" Clear\n");
                 numClicks = 0;
                 component.clearPoints();
+                component.repaint();
                 return;
             }
             
-            component.update(numClicks, event.getX(), event.getY());
+            component.update(numClicks, event.getX(), (event.getY()-30)); //Off by the title bar
+            //System.out.println("Mouse Event X: "+event.getX() + " Y: "+event.getY());
             component.repaint();
         }
         public void mouseEntered(MouseEvent event)
