@@ -1,6 +1,7 @@
 import javax.swing.JComponent;
 import java.awt.Color;
 import java.awt.geom.Point2D;
+import java.awt.Graphics;
 
 
 public abstract class Shape extends JComponent
@@ -27,17 +28,25 @@ public abstract class Shape extends JComponent
     /**
      * 
      */
-    public void isInside(Point2D.Double point)
+    public boolean isInside(Point2D.Double point)
     {
-        //TODO: implement this
+        if ((point.getX() >= this.getX()) | (point.getX() <= (this.getX()+this.getRadius())))
+        {
+            if ((point.getY() >= this.getY()) | (point.getY() <= (this.getY()+this.getRadius())))
+            {
+                return true;
+            }
+        }
+        return false;
     }
     
     /**
      * 
      */
-    public void onBorder(Point2D.Double point)
+    public boolean onBorder(Point2D.Double point)
     {
         //TODO: implement this
+        return false;
     }
     
     /**
@@ -54,6 +63,37 @@ public abstract class Shape extends JComponent
     public void setRadius(double newRadius)
     {
         this.radius = newRadius;
+    }
+    
+    /**
+     * 
+     */
+    public int getX()
+    {
+        return (int)(getCenter().getX() - getRadius());
+    }
+    
+    /**
+     * 
+     */
+    public int getY()
+    {
+        return (int)(getCenter().getY() - getRadius());
+    }
+    
+    /**
+     * 
+     */
+    public Color getColor()
+    {
+        return this.color;
+    }
+    
+    /**
+     * 
+     */
+    public void draw(Graphics g, boolean selected)
+    {
     }
     
     /**

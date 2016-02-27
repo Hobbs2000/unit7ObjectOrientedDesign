@@ -52,6 +52,7 @@ public class ControlPanel extends JPanel
             {
                 canvas.addSquare();
             }
+            
         }
     }
 }

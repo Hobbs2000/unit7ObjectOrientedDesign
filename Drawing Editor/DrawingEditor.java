@@ -36,8 +36,20 @@ public class DrawingEditor extends JFrame
     /**
      * 
      */
+    public void repaint()
+    {
+        canvas.repaint();
+    }
+    
+    /**
+     * 
+     */
     public static void main(String[] args)
     {
         DrawingEditor editor = new DrawingEditor();
+        while (true)
+        {
+            editor.repaint();
+        }
     }
 }
