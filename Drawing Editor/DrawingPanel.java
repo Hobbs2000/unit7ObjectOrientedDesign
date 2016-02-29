@@ -22,6 +22,9 @@ public class DrawingPanel extends JPanel
     private ArrayList<Shape> shapes = new ArrayList<Shape>();
     
     private Shape selectedShape;
+    private double ax;
+    private double ay;
+    private boolean mouseDown;
     
     /**
      * 
@@ -73,11 +76,17 @@ public class DrawingPanel extends JPanel
             if (shapes.get(i) != selectedShape)
             {
                 shapes.get(i).draw(g, false);
+                System.out.println(shapes.get(i).getRadius());
             }
         }
         
         if (selectedShape != null)
         {
+            if(mouseDown){
+                if(
+                ax = .getX();
+                selectedShape.move(ax,ay);
+            }
             selectedShape.draw(g, true);
         }
     }
@@ -115,12 +124,18 @@ public class DrawingPanel extends JPanel
          */
         public void mousePressed(MouseEvent e)
         {
+            System.out.println("Pressed");
+            if (selectedShape != null)
+            {
+                mouseDown = true;
+            }
         }
         /**
          * 
          */
         public void mouseReleased(MouseEvent e)
         {
+            mouseDown = false;
         }    
         /**
          * 

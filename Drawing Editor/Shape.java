@@ -70,7 +70,7 @@ public abstract class Shape extends JComponent
      */
     public int getX()
     {
-        return (int)(getCenter().getX() - getRadius());
+        return (int)(getCenter().getX() - .5*getRadius());
     }
     
     /**
@@ -78,7 +78,7 @@ public abstract class Shape extends JComponent
      */
     public int getY()
     {
-        return (int)(getCenter().getY() - getRadius());
+        return (int)(getCenter().getY() - .5*getRadius());
     }
     
     /**

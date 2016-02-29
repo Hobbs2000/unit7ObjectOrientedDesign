@@ -1,5 +1,6 @@
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
+import java.lang.Thread;
 
 /**
  * 
@@ -38,18 +39,21 @@ public class DrawingEditor extends JFrame
      */
     public void repaint()
     {
+        super.repaint();
         canvas.repaint();
     }
+    
     
     /**
      * 
      */
-    public static void main(String[] args)
+    public static void main(String[] args) throws java.lang.InterruptedException
     {
         DrawingEditor editor = new DrawingEditor();
         while (true)
         {
             editor.repaint();
+            Thread.sleep(33);
         }
     }
 }
