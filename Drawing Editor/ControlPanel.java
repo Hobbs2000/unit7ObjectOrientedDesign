@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 
 public class ControlPanel extends JPanel
 {
-    private JButton pickColor, addCircle, addSquare;
+    private JButton pickColor, addCircle, addSquare, deselect;
     private JPanel colorShower;
     private DrawingPanel canvas;
     private ActionListener buttonListener;
@@ -31,6 +31,10 @@ public class ControlPanel extends JPanel
         addSquare = new JButton("Add Square");
         addSquare.addActionListener(buttonListener);
         this.add(addSquare);
+        
+        deselect = new JButton("Deselect");
+        deselect.addActionListener(buttonListener);
+        this.add(deselect);
     }
     
     /**
@@ -51,6 +55,10 @@ public class ControlPanel extends JPanel
             else if (e.getActionCommand() == "Add Square")
             {
                 canvas.addSquare();
+            }
+            else if (e.getActionCommand() == "Deselect")
+            {
+                canvas.deselect();
             }
             
         }

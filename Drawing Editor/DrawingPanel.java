@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.awt.geom.Point2D;
 import java.awt.Point;
 import java.awt.Graphics;
+import java.awt.MouseInfo;
 
 /**
  * 
@@ -67,6 +68,15 @@ public class DrawingPanel extends JPanel
     }
     
     /**
+     * Deselects the current shape
+     */
+    public void deselect()
+    {
+        selectedShape = null;
+        mouseDown = false;
+    }
+    
+    /**
      * 
      */
     public void paintComponent(Graphics g)
@@ -76,18 +86,22 @@ public class DrawingPanel extends JPanel
             if (shapes.get(i) != selectedShape)
             {
                 shapes.get(i).draw(g, false);
-                System.out.println(shapes.get(i).getRadius());
             }
         }
         
         if (selectedShape != null)
         {
-            if(mouseDown){
-                if(
-                ax = .getX();
-                selectedShape.move(ax,ay);
+            if(mouseDown)
+            {
+                double x = MouseInfo.getPointerInfo().getLocation().getX();
+                double y = MouseInfo.getPointerInfo().getLocation().getY();
+                selectedShape.move(x,y);
+                selectedShape.draw(g, true);
             }
-            selectedShape.draw(g, true);
+            else
+            {
+                selectedShape.draw(g, true);
+            }
         }
     }
     
@@ -109,14 +123,20 @@ public class DrawingPanel extends JPanel
          * 
          */
         public void mouseClicked(MouseEvent e)
-        {          
+        {
+            boolean any = false;
             for (int i = 0; i < shapes.size(); i++)
             {
                 if (shapes.get(i).isInside(new Point2D.Double(e.getX(), e.getY())))
                 {
                     selectedShape = shapes.get(i);
+                    any = true;
                     break;
                 }
+            }
+            if (any == false)
+            {
+                selectedShape = null;
             }
         }
         /**
@@ -124,11 +144,7 @@ public class DrawingPanel extends JPanel
          */
         public void mousePressed(MouseEvent e)
         {
-            System.out.println("Pressed");
-            if (selectedShape != null)
-            {
-                mouseDown = true;
-            }
+            mouseDown = true;
         }
         /**
          * 

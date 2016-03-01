@@ -18,11 +18,11 @@ public class Circle extends Shape
         
         if (selected == true)
         {
-            g.drawOval(this.getX(), this.getY(), (int)this.getRadius(), (int)this.getRadius());
+            g.drawOval(this.getX(), this.getY(), (int)this.getRadius()*2, (int)this.getRadius()*2);
         }
         else
         {
-            g.fillOval(this.getX(), this.getY(), (int)this.getRadius(), (int)this.getRadius());
+            g.fillOval(this.getX(), this.getY(), (int)this.getRadius()*2, (int)this.getRadius()*2);
         }
     }
 }

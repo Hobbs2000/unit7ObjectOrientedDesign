@@ -30,9 +30,9 @@ public abstract class Shape extends JComponent
      */
     public boolean isInside(Point2D.Double point)
     {
-        if ((point.getX() >= this.getX()) | (point.getX() <= (this.getX()+this.getRadius())))
+        if ((point.getX() >= this.getX()) && (point.getX() <= (this.getX()+(this.getRadius()*2))))
         {
-            if ((point.getY() >= this.getY()) | (point.getY() <= (this.getY()+this.getRadius())))
+            if ((point.getY() >= this.getY()) && (point.getY() <= (this.getY()+(this.getRadius()*2))))
             {
                 return true;
             }
@@ -70,7 +70,7 @@ public abstract class Shape extends JComponent
      */
     public int getX()
     {
-        return (int)(getCenter().getX() - .5*getRadius());
+        return (int)(getCenter().getX() - getRadius());
     }
     
     /**
@@ -78,7 +78,7 @@ public abstract class Shape extends JComponent
      */
     public int getY()
     {
-        return (int)(getCenter().getY() - .5*getRadius());
+        return (int)(getCenter().getY() - getRadius());
     }
     
     /**

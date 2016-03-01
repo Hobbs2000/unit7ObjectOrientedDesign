@@ -53,7 +53,6 @@ public class DrawingEditor extends JFrame
         while (true)
         {
             editor.repaint();
-            Thread.sleep(33);
         }
     }
 }

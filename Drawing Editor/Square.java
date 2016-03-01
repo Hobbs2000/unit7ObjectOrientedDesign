@@ -18,11 +18,11 @@ public class Square extends Shape
         
         if (selected == true)
         {
-            g.drawRect(this.getX(), this.getY(), (int)this.getRadius(), (int)this.getRadius());
+            g.drawRect(this.getX(), this.getY(), (int)this.getRadius()*2, (int)this.getRadius()*2);
         }
         else
         {
-            g.fillRect(this.getX(), this.getY(), (int)this.getRadius(), (int)this.getRadius());
+            g.fillRect(this.getX(), this.getY(), (int)this.getRadius()*2, (int)this.getRadius()*2);
         }
     }
 }
