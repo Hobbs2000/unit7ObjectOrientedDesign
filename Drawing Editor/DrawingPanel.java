@@ -10,6 +10,7 @@ import java.awt.geom.Point2D;
 import java.awt.Point;
 import java.awt.Graphics;
 import java.awt.MouseInfo;
+import javax.swing.JColorChooser;
 
 /**
  * 
@@ -21,8 +22,9 @@ public class DrawingPanel extends JPanel
     private Color currentColor;
     
     private ArrayList<Shape> shapes = new ArrayList<Shape>();
-    
+  
     private Shape selectedShape;
+    private int selectedShapeLayer;
     private double ax;
     private double ay;
     private boolean mouseDown;
@@ -45,6 +47,11 @@ public class DrawingPanel extends JPanel
     public void pickColor()
     {
         System.out.println("picking color");
+        currentColor = JColorChooser.showDialog(this, "Pick Color", currentColor);
+        if (selectedShape != null)
+        {
+            selectedShape.setColor(currentColor);
+        }
     }
     
     /**
@@ -63,7 +70,7 @@ public class DrawingPanel extends JPanel
     public void addSquare()
     {
         System.out.println("adding square");
-        Shape newSquare = new Square(Color.GRAY,new Point2D.Double(200.0, 300.0), 100);
+        Shape newSquare = new Square(currentColor,new Point2D.Double(200.0, 300.0), 100);
         shapes.add(newSquare);
     }
     
@@ -93,8 +100,8 @@ public class DrawingPanel extends JPanel
         {
             if(mouseDown)
             {
-                double x = MouseInfo.getPointerInfo().getLocation().getX();
-                double y = MouseInfo.getPointerInfo().getLocation().getY();
+                double x = MouseInfo.getPointerInfo().getLocation().getX() - this.getLocationOnScreen().getX();
+                double y = MouseInfo.getPointerInfo().getLocation().getY() - this.getLocationOnScreen().getY();
                 selectedShape.move(x,y);
                 selectedShape.draw(g, true);
             }
@@ -113,6 +120,14 @@ public class DrawingPanel extends JPanel
         return currentColor;
     }
     
+    /**
+     * 
+     */
+    public int getLayer()
+    {
+        return selectedShapeLayer;
+    }
+    
     
     /**
      * 
@@ -125,11 +140,12 @@ public class DrawingPanel extends JPanel
         public void mouseClicked(MouseEvent e)
         {
             boolean any = false;
-            for (int i = 0; i < shapes.size(); i++)
+            for (int i = shapes.size()-1; i >= 0; i--)
             {
                 if (shapes.get(i).isInside(new Point2D.Double(e.getX(), e.getY())))
                 {
                     selectedShape = shapes.get(i);
+                    selectedShapeLayer = (shapes.size() - i)+1;
                     any = true;
                     break;
                 }
@@ -137,6 +153,7 @@ public class DrawingPanel extends JPanel
             if (any == false)
             {
                 selectedShape = null;
+                selectedShapeLayer = 0;
             }
         }
         /**

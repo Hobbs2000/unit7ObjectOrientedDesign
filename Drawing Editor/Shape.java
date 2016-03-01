@@ -92,6 +92,14 @@ public abstract class Shape extends JComponent
     /**
      * 
      */
+    public void setColor(Color newColor)
+    {
+        this.color = newColor;
+    }
+    
+    /**
+     * 
+     */
     public void draw(Graphics g, boolean selected)
     {
     }
