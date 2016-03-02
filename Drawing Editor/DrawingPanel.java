@@ -26,7 +26,8 @@ public class DrawingPanel extends JPanel
   
     private Shape selectedShape;
     private int selectedShapeIndex = 0;
-    private boolean mouseDown;
+    private boolean dragging;
+    private boolean resizing;
     
     /**
      * 
@@ -45,7 +46,6 @@ public class DrawingPanel extends JPanel
      */
     public void pickColor()
     {
-        System.out.println("picking color");
         currentColor = JColorChooser.showDialog(this, "Pick Color", currentColor);
         if (selectedShape != null)
         {
@@ -58,8 +58,7 @@ public class DrawingPanel extends JPanel
      */
     public void addCircle()
     {
-        System.out.println("adding circle");
-        Shape newCircle = new Circle(currentColor, new Point2D.Double(250.0, 300.0), 100);
+        Shape newCircle = new Circle(currentColor, new Point2D.Double(200.0, 300.0), 100);
         shapes.add(newCircle);
     }
     
@@ -68,7 +67,6 @@ public class DrawingPanel extends JPanel
      */
     public void addSquare()
     {
-        System.out.println("adding square");
         Shape newSquare = new Square(currentColor,new Point2D.Double(200.0, 300.0), 100);
         shapes.add(newSquare);
     }
@@ -80,7 +78,7 @@ public class DrawingPanel extends JPanel
     {
         selectedShape = null;
         selectedShapeIndex = -1;
-        mouseDown = false;
+        dragging = false;
     }
     
     /**
@@ -98,16 +96,25 @@ public class DrawingPanel extends JPanel
         
         if (selectedShape != null)
         {
-            if(mouseDown)
+            if(dragging)
             {
                 double x = MouseInfo.getPointerInfo().getLocation().getX() - this.getLocationOnScreen().getX();
                 double y = MouseInfo.getPointerInfo().getLocation().getY() - this.getLocationOnScreen().getY();
                 selectedShape.move(x,y);
                 selectedShape.draw(g, true);
             }
+            else if (resizing)
+            {
+                double x = MouseInfo.getPointerInfo().getLocation().getX() - this.getLocationOnScreen().getX();
+                double y = MouseInfo.getPointerInfo().getLocation().getY() - this.getLocationOnScreen().getY();
+                
+                double distance = Math.sqrt(Math.pow(selectedShape.getCenter().getX()-x, 2)+Math.pow(selectedShape.getCenter().getY()-y,2));
+                selectedShape.resize(distance);
+                selectedShape.draw(g, true);
+            }
             else
             {
-                selectedShape.draw(g, true);
+                selectedShape.draw(g, false);
             }
         }
     }
@@ -126,6 +133,23 @@ public class DrawingPanel extends JPanel
     public int getLayer()
     {
         return shapes.size() - selectedShapeIndex;
+    }
+    
+    /**
+     * 
+     */
+    public void copy()
+    {
+        Color copyColor = selectedShape.getColor();
+        double copyRadius = selectedShape.getRadius();
+        if (selectedShape instanceof Circle)
+        {
+            shapes.add(new Circle(copyColor, new Point2D.Double(200.0, 300.0), copyRadius));
+        }
+        else
+        {
+            shapes.add(new Square(copyColor, new Point2D.Double(200.0, 300.0), copyRadius));
+        }
     }
     
     /**
@@ -203,14 +227,33 @@ public class DrawingPanel extends JPanel
          */
         public void mousePressed(MouseEvent e)
         {
-            mouseDown = true;
+            if (selectedShape.isInside(new Point2D.Double(e.getX(), e.getY())))
+            {
+                if (selectedShape.onBorder(new Point2D.Double(e.getX(), e.getY())) == true)
+                {
+                    System.out.println("Resizing");
+                    resizing = true;
+                    dragging = false;
+                }
+                else
+                {
+                    resizing = false;
+                    dragging = true;
+                }
+            }
+            else
+            {
+                resizing = false;
+                dragging = false;
+            }
         }
         /**
          * 
          */
         public void mouseReleased(MouseEvent e)
         {
-            mouseDown = false;
+            dragging = false;
+            resizing = false;
         }    
         /**
          * 

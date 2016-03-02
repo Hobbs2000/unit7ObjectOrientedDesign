@@ -45,7 +45,13 @@ public abstract class Shape extends JComponent
      */
     public boolean onBorder(Point2D.Double point)
     {
-        //TODO: implement this
+        int distance = (int)Math.sqrt(Math.pow(this.getCenter().getX()-point.getX(), 2)+Math.pow(this.getCenter().getY()-point.getY(),2));
+        System.out.println("click distance:"+distance);
+        System.out.println("radius:"+radius);
+        if (!(distance > radius) && (distance > (radius-10)))
+        {
+            return true;
+        }
         return false;
     }
     
@@ -95,6 +101,14 @@ public abstract class Shape extends JComponent
     public void setColor(Color newColor)
     {
         this.color = newColor;
+    }
+    
+    /**
+     * 
+     */
+    public void resize(double newRadius)
+    {
+        this.radius = newRadius;
     }
     
     /**

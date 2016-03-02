@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 
 public class ControlPanel extends JPanel
 {
-    private JButton pickColor, addCircle, addSquare, deselect, changeLayer, findLayer;
+    private JButton copy, pickColor, addCircle, addSquare, deselect, changeLayer, findLayer;
     private JPanel colorShower;
     private JTextField layer;
     private JLabel layerLabel;
@@ -18,6 +18,10 @@ public class ControlPanel extends JPanel
         buttonListener = new ButtonListener();
         
         this.canvas = canvas;
+        
+        copy = new JButton("Copy");
+        copy.addActionListener(buttonListener);
+        this.add(copy);
         
         pickColor = new JButton("Pick Color");
         pickColor.addActionListener(buttonListener);
@@ -97,6 +101,10 @@ public class ControlPanel extends JPanel
             else if (e.getActionCommand() == "Find Layer")
             {
                 layer.setText(Integer.toString(canvas.getLayer()));
+            }
+            else if (e.getActionCommand() == "Copy")
+            {
+                canvas.copy();
             }
             
         }
