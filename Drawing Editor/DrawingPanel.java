@@ -11,6 +11,7 @@ import java.awt.Point;
 import java.awt.Graphics;
 import java.awt.MouseInfo;
 import javax.swing.JColorChooser;
+import java.util.Collections;
 
 /**
  * 
@@ -24,9 +25,7 @@ public class DrawingPanel extends JPanel
     private ArrayList<Shape> shapes = new ArrayList<Shape>();
   
     private Shape selectedShape;
-    private int selectedShapeLayer;
-    private double ax;
-    private double ay;
+    private int selectedShapeIndex = 0;
     private boolean mouseDown;
     
     /**
@@ -80,6 +79,7 @@ public class DrawingPanel extends JPanel
     public void deselect()
     {
         selectedShape = null;
+        selectedShapeIndex = -1;
         mouseDown = false;
     }
     
@@ -125,7 +125,49 @@ public class DrawingPanel extends JPanel
      */
     public int getLayer()
     {
-        return selectedShapeLayer;
+        return shapes.size() - selectedShapeIndex;
+    }
+    
+    /**
+     * Will move the selected shape to the desired layer by changing its position in Shapes
+     */
+    public void setLayer(int newLayer)
+    {
+        int newLayerIndex;
+        //Make sure the newLayer will not cause an error
+        if (newLayer <= 0)
+        {
+            newLayerIndex = shapes.size() - 1;
+        }
+        else if (newLayer >= shapes.size())
+        {
+            newLayerIndex = 0;
+        }
+        else
+        {
+            newLayerIndex = shapes.size() - newLayer;
+        }
+        
+        shapes.add(newLayerIndex, shapes.get(selectedShapeIndex));
+        
+        //Have to remove the remaining un-moved shape from the list, but done differently 
+        //depending on the values of selectedShapeIndex and newLayerIndex because of the way
+        //ArrayList.add() works
+        if (selectedShapeIndex > newLayerIndex)
+        {
+            shapes.remove(selectedShapeIndex+1); 
+            selectedShapeIndex = newLayerIndex;
+        }
+        else if (selectedShapeIndex < newLayerIndex)
+        {
+            shapes.remove(selectedShapeIndex);
+            if (newLayerIndex == (shapes.size()-1))
+            {
+                Collections.swap(shapes, shapes.size()-2, shapes.size()-1);
+            }
+            selectedShapeIndex = newLayerIndex;
+        }
+        
     }
     
     
@@ -145,7 +187,7 @@ public class DrawingPanel extends JPanel
                 if (shapes.get(i).isInside(new Point2D.Double(e.getX(), e.getY())))
                 {
                     selectedShape = shapes.get(i);
-                    selectedShapeLayer = (shapes.size() - i)+1;
+                    selectedShapeIndex = i;
                     any = true;
                     break;
                 }
@@ -153,7 +195,7 @@ public class DrawingPanel extends JPanel
             if (any == false)
             {
                 selectedShape = null;
-                selectedShapeLayer = 0;
+                selectedShapeIndex = -1;
             }
         }
         /**

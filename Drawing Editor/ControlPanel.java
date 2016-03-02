@@ -7,10 +7,9 @@ import java.awt.event.ActionEvent;
 
 public class ControlPanel extends JPanel
 {
-    private JButton pickColor, addCircle, addSquare, deselect;
+    private JButton pickColor, addCircle, addSquare, deselect, changeLayer, findLayer;
     private JPanel colorShower;
     private JTextField layer;
-    private JButton changeLayer;
     private JLabel layerLabel;
     private DrawingPanel canvas;
     private ActionListener buttonListener;
@@ -51,6 +50,10 @@ public class ControlPanel extends JPanel
         changeLayer.addActionListener(buttonListener);
         this.add(changeLayer);
         
+        findLayer = new JButton("Find Layer");
+        findLayer.addActionListener(buttonListener);
+        this.add(findLayer);
+        
     }
     
     /**
@@ -79,7 +82,7 @@ public class ControlPanel extends JPanel
             }
             else if (e.getActionCommand() == "Change Layer")
             {
-                int newLayer;
+                int newLayer = canvas.getLayer();
                 try 
                 {
                     newLayer = Integer.parseInt(layer.getText());
@@ -89,7 +92,11 @@ public class ControlPanel extends JPanel
                     System.out.println("Exception : "+ex);
                 } 
                 
-                canvas.changeLayer(newLayer);
+                canvas.setLayer(newLayer);
+            }
+            else if (e.getActionCommand() == "Find Layer")
+            {
+                layer.setText(Integer.toString(canvas.getLayer()));
             }
             
         }
