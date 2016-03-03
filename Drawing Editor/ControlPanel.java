@@ -5,6 +5,9 @@ import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * This is the panel that holds all the buttons for the editor
+ */
 public class ControlPanel extends JPanel
 {
     private JButton copy, pickColor, addCircle, addSquare, deselect, changeLayer, findLayer;

@@ -14,7 +14,7 @@ import javax.swing.JColorChooser;
 import java.util.Collections;
 
 /**
- * 
+ * This is the panel where shapes are created, held, displayed, and edited
  */
 public class DrawingPanel extends JPanel
 {
@@ -23,6 +23,8 @@ public class DrawingPanel extends JPanel
     private Color currentColor;
     
     private ArrayList<Shape> shapes = new ArrayList<Shape>();
+    private final int DEFAULT_RADIUS = 100;
+    private final Point2D.Double DEFAULT_START = new Point2D.Double(200.0, 300.0);
   
     private Shape selectedShape;
     private int selectedShapeIndex = 0;
@@ -42,7 +44,7 @@ public class DrawingPanel extends JPanel
     }
     
     /**
-     * 
+     * Changes the current color by using a JColorChooser
      */
     public void pickColor()
     {
@@ -54,20 +56,20 @@ public class DrawingPanel extends JPanel
     }
     
     /**
-     * 
+     * Adds a circle to the shapes ArrayList
      */
     public void addCircle()
     {
-        Shape newCircle = new Circle(currentColor, new Point2D.Double(200.0, 300.0), 100);
+        Shape newCircle = new Circle(currentColor, DEFAULT_START, DEFAULT_RADIUS);
         shapes.add(newCircle);
     }
     
     /**
-     * 
+     * Adds a square to the shapes ArrayList
      */
     public void addSquare()
     {
-        Shape newSquare = new Square(currentColor,new Point2D.Double(200.0, 300.0), 100);
+        Shape newSquare = new Square(currentColor, DEFAULT_START, DEFAULT_RADIUS);
         shapes.add(newSquare);
     }
     
@@ -82,10 +84,11 @@ public class DrawingPanel extends JPanel
     }
     
     /**
-     * 
+     * Will paint all the shapes to the screen
      */
     public void paintComponent(Graphics g)
     {
+        //Draw all the shapes except the selected one
         for (int i = 0; i < shapes.size(); i++)
         {
             if (shapes.get(i) != selectedShape)
@@ -94,10 +97,12 @@ public class DrawingPanel extends JPanel
             }
         }
         
+        //This handles how the selected shape is being drawn
         if (selectedShape != null)
         {
             if(dragging)
             {
+                //Move the shape to the position of the mouse
                 double x = MouseInfo.getPointerInfo().getLocation().getX() - this.getLocationOnScreen().getX();
                 double y = MouseInfo.getPointerInfo().getLocation().getY() - this.getLocationOnScreen().getY();
                 selectedShape.move(x,y);
@@ -108,6 +113,7 @@ public class DrawingPanel extends JPanel
                 double x = MouseInfo.getPointerInfo().getLocation().getX() - this.getLocationOnScreen().getX();
                 double y = MouseInfo.getPointerInfo().getLocation().getY() - this.getLocationOnScreen().getY();
                 
+                //Gets the distance from the point clicked to the center, this will be the new radius
                 double distance = Math.sqrt(Math.pow(selectedShape.getCenter().getX()-x, 2)+Math.pow(selectedShape.getCenter().getY()-y,2));
                 selectedShape.resize(distance);
                 selectedShape.draw(g, true);
@@ -120,7 +126,7 @@ public class DrawingPanel extends JPanel
     }
     
     /**
-     * 
+     * Returns the current color
      */
     public Color getColor()
     {
@@ -128,7 +134,7 @@ public class DrawingPanel extends JPanel
     }
     
     /**
-     * 
+     * Returns what layer the selected shape is on (different from its index in shapes)
      */
     public int getLayer()
     {
@@ -136,19 +142,22 @@ public class DrawingPanel extends JPanel
     }
     
     /**
-     * 
+     * Copies the attributes of the selected Shape into a new Shape that is added to the list of shapes
      */
     public void copy()
     {
         Color copyColor = selectedShape.getColor();
         double copyRadius = selectedShape.getRadius();
+        
+        //Cannot instantiate a basic Shape because the class is abstract
+        //Must test what kind of shape it is going to be 
         if (selectedShape instanceof Circle)
         {
-            shapes.add(new Circle(copyColor, new Point2D.Double(200.0, 300.0), copyRadius));
+            shapes.add(new Circle(copyColor, DEFAULT_START, copyRadius));
         }
         else
         {
-            shapes.add(new Square(copyColor, new Point2D.Double(200.0, 300.0), copyRadius));
+            shapes.add(new Square(copyColor, DEFAULT_START, copyRadius));
         }
     }
     
@@ -158,7 +167,7 @@ public class DrawingPanel extends JPanel
     public void setLayer(int newLayer)
     {
         int newLayerIndex;
-        //Make sure the newLayer will not cause an error
+        //Make sure the newLayer will not cause an index error
         if (newLayer <= 0)
         {
             newLayerIndex = shapes.size() - 1;
@@ -172,11 +181,12 @@ public class DrawingPanel extends JPanel
             newLayerIndex = shapes.size() - newLayer;
         }
         
+        //Copy and put the selected shape in its new index
         shapes.add(newLayerIndex, shapes.get(selectedShapeIndex));
         
-        //Have to remove the remaining un-moved shape from the list, but done differently 
+        //Have to remove the remaining original shape from the list, but done differently 
         //depending on the values of selectedShapeIndex and newLayerIndex because of the way
-        //ArrayList.add() works
+        //ArrayList.add() works by shifting other elements indexes to make room for the added element
         if (selectedShapeIndex > newLayerIndex)
         {
             shapes.remove(selectedShapeIndex+1); 
@@ -227,6 +237,7 @@ public class DrawingPanel extends JPanel
          */
         public void mousePressed(MouseEvent e)
         {
+            //Will check to see if this mouse press is meant to resize the shape or move it or deselect the shape
             if (selectedShape.isInside(new Point2D.Double(e.getX(), e.getY())))
             {
                 if (selectedShape.onBorder(new Point2D.Double(e.getX(), e.getY())) == true)

@@ -3,7 +3,7 @@ import java.awt.BorderLayout;
 import java.lang.Thread;
 
 /**
- * 
+ * The main frame for the program
  */
 public class DrawingEditor extends JFrame
 {
